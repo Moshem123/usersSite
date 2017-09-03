@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet"/>
+    <link href="/css/users.css" rel="stylesheet">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
+    <script src="/js/users.js"></script>
+
+    <title>Users</title>
+</head>
+<body>
+
+<div class="container">
+    <div class="row bottom-buffer">
+        <div class="col-md-12 main">
+            <h3 class="text-center text-primary">
+                Add New User
+            </h3>
+        </div>
+    </div>
+    <form id="userForm">
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Environment</label>
+            <div class="col-sm-10">
+                <label class="radio-inline"><input type="radio" name="optEnv" id="qa">QA</label>
+                <label class="radio-inline"><input type="radio" name="optEnv" id="uat">UAT</label>
+                <label class="radio-inline"><input type="radio" name="optEnv" id="production">Production</label>
+            </div>
+
+        </div>
+        <div class="form-group row">
+            <label for="inputHosts" class="col-sm-2 col-form-label">Hosts</label>
+            <div class="col-sm-10">
+                <select id='inputHosts' name='inputHosts' multiple="multiple" style="width: 49%"></select>
+                <p class="help-block">
+                    <span class="label label-primary" id="selectAll">Select all</span>
+                    <span class="label label-danger" id="clearHosts">Clear</span>
+                </p>
+            </div>
+
+        </div>
+        <div class="form-group row">
+            <label for="inputEmail" class="col-sm-2 col-form-label">Email</label>
+            <div class="col-sm-5">
+                <input type="email" class="form-control" id="inputEmail" placeholder="Email Address">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="inputUserName" class="col-sm-2 col-form-label">User Name</label>
+            <div class="col-sm-5">
+                <input type="text" class="form-control" id="inputUserName" placeholder="User Name">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="inputFirstName" class="col-sm-2 col-form-label">First Name</label>
+            <div class="col-sm-5">
+                <input type="text" class="form-control" id="inputFirstName" placeholder="First Name">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="inputLastName" class="col-sm-2 col-form-label">Last Name</label>
+            <div class="col-sm-5">
+                <input type="text" class="form-control" id="inputLastName" placeholder="Last Name">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="inputTelephone" class="col-sm-2 col-form-label">Telephone</label>
+            <div class="col-sm-5">
+                <input type="tel" class="form-control" id="inputTelephone" placeholder="050-1234567">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="inputPassword" class="col-sm-2 col-form-label">Password</label>
+            <div class="col-sm-5">
+                <input type="password" class="form-control" id="inputPassword" placeholder="Password">
+            </div>
+        </div>
+        <div class="row">&nbsp;</div>
+        <div class="form-group row">
+            <div class="col-sm-3">
+                <button type="submit" id="createUser" class="btn btn-primary">Sign Up</button>
+            </div>
+        </div>
+    </form>
+    <div class="row">
+        <div class="col-md-12">
+            <p class="help-block float-right">
+                <button type="button" class="btn btn-default btn-sm consoleLog" id="clearBtn" style="display: none;">
+                    <span class="glyphicon glyphicon-remove"></span></button>
+            </p>
+            <pre class="consoleLog" id="consoleLog" style="display: none;white-space: pre-wrap;"></pre>
+        </div>
+    </div>
+</div>
+</body>
+</html>

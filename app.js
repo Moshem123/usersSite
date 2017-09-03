@@ -3,6 +3,7 @@ const path = require('path');
 const request = require('request');
 const bodyParser = require('body-parser');
 const logger = require('morgan');
+const jenkinsapi = require('jenkins-api');
 const app = express();
 const port = 3000;
 
@@ -29,7 +30,7 @@ function userAPI(url, postData, res) {
     };
     request(clientServerOptions, function (error, response) {
         if (error) throw error;
-        console.log('server response from request', response.body);
+        console.log('aserver response from request', response.body);
         res.send(response.body.replace(/^"|"$/g, ''));
     });
 }
@@ -44,10 +45,6 @@ app.post('/proxy', function (req, res) {
     let newUrl = 'http://' + url + ':7554/' + path;
     console.log("path of request " + newUrl + " to org " + orgname);
     userAPI(newUrl, input, res);
-});
-
-app.post('/jenkins', (req, res) => {
-    console.log('jenkins',req.body);
 });
 
 

@@ -82,20 +82,20 @@ $(document).ready(function () {
     let env;
     let firstLoad = true;
     let successHosts = [];
-    // let orgEnvironments = {
-    //     'qa': {
-    //         data: [],
-    //         url: '10.2.14.27'
-    //     },
-    //     'uat': {
-    //         data: [],
-    //         url: '10.2.1.28'
-    //     },
-    //     'production': {
-    //         data: [],
-    //         url: '10.6.0.251'
-    //     }
-    // };
+    let orgEnvironments = {
+        'qa': {
+            data: [],
+            url: '10.2.14.27'
+        },
+        'uat': {
+            data: [],
+            url: '10.2.1.28'
+        },
+        'production': {
+            data: [],
+            url: '10.6.0.251'
+        }
+    };
     const apiURL = '/proxy';
     const newKeys = {hostName: 'text', orgGuid: 'id'};
     let postData = {

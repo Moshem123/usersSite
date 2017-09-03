@@ -75,54 +75,42 @@ $(document).ready(function () {
             url: '10.6.0.251'
         }
     };
-    let successHosts = [];
 
-
-    // add functionality for clear button
-    function initClr() {
-        $("#clearBtn").on('click', function () {
-            $("#consoleLog").html('');
-        });
-    }
-
-    initClr();
-
+    //##########################################################################
+    // ---Variables---
     let tradairOrgId = [];
-    $("#inputHosts").select2();
-    // Change value of environment
     let env;
-    $("input[name='optEnv']").change(function () {
-        env = this.id;
-        tradairOrgId = orgEnvironments[env].data;
-        initSelect();
-    });
-
-    // Init the select box
     let firstLoad = true;
-
-    function initSelect() {
-
-        if (!firstLoad) {
-            $('#inputHosts').html('');
+    let successHosts = [];
+    // let orgEnvironments = {
+    //     'qa': {
+    //         data: [],
+    //         url: '10.2.14.27'
+    //     },
+    //     'uat': {
+    //         data: [],
+    //         url: '10.2.1.28'
+    //     },
+    //     'production': {
+    //         data: [],
+    //         url: '10.6.0.251'
+    //     }
+    // };
+    const apiURL = '/proxy';
+    const newKeys = {hostName: 'text', orgGuid: 'id'};
+    let postData = {
+        header: {
+            ownerName: 'usersSite'
+        },
+        payload: {
+            path: 'v2/host/getHostsTradairOrgIds',
+            url: ''
         }
-        //remove .tradair.com from clients' name
-        tradairOrgId = JSON.parse(JSON.stringify(tradairOrgId).replace(/.tradair.com/g, ""));
-        $('#inputHosts').select2({
-            data: tradairOrgId
-        });
-        firstLoad = false;
-    }
+    };
 
-//apply functionality to select all clients and clear buttons
-    $("#selectAll").on("click", function () {
-        $("#inputHosts").val(tradairOrgId.map(function (obj) {
-            return obj.id
-        })).trigger('change')
-    });
-    $("#clearHosts").on("click", function () {
-        $("#inputHosts").val(null).trigger("change")
-    });
-
+    //##########################################################################
+    // ---Functions---
+    // Generate GUID
     function guid() {
         function s4() {
             return Math.floor((1 + Math.random()) * 0x10000)
@@ -134,9 +122,62 @@ $(document).ready(function () {
             s4() + '-' + s4() + s4() + s4();
     }
 
+    // Rename keys for select2 (Add New User)
+    function renameKeys(obj, newKeys) {
+        const keyValues = Object.keys(obj).map(key => {
+            const newKey = newKeys[key] || key;
+            return {[newKey]: obj[key]};
+        });
+        return Object.assign({}, ...keyValues);
+    }
+
+    // Add functionality for clear button of console log!!! (register event)
+    function initClr() {
+        $("#clearBtn").on('click', function () {
+            $("#consoleLog").html('');
+        });
+    }
+
+    // Add hosts to select2 box (Add New User)
+    function initSelect() {
+
+        if (!firstLoad) {
+            $('#inputHosts, #inputHostsUpdate').html('');
+        }
+        //remove .tradair.com from clients' name
+        tradairOrgId = JSON.parse(JSON.stringify(tradairOrgId).replace(/.tradair.com/g, ""));
+        $('#inputHosts, #inputHostsUpdate').select2({
+            data: tradairOrgId
+        });
+        firstLoad = false;
+    }
+
+    //##########################################################################
+    // ---Init buttons---
+    initClr(); //(Add New User)
+
+    $("#inputHosts, #inputHostsUpdate").select2(); // (Add New User)
+
+    // Change value of environment
+    $("input[name='optEnv']").change(function () {
+        env = $(this).attr("data-env");
+        tradairOrgId = orgEnvironments[env].data;
+        initSelect();
+    });
+
+    //apply functionality to select all clients and clear buttons
+    $('*[data-action="selectAll"]').on("click", function () {
+        $("#inputHosts, #inputHostsUpdate").val(tradairOrgId.map(function (obj) {
+            return obj.id
+        })).trigger('change')
+    });
+    $('*[data-action="clearHosts"]').on("click", function () {
+        $("#inputHosts, #inputHostsUpdate").val(null).trigger("change")
+    });
+
+    // Submit the form
     $("#userForm").submit(function (event) {
         event.preventDefault();
-        var apiURL = "/proxy";
         var formData = {
             header: {
                 ownerName: ""
@@ -173,7 +214,7 @@ $(document).ready(function () {
                 url: orgEnvironments[env].url
             }
         };
-        let selectedHosts = $("#inputHosts").val();
+        let selectedHosts = $("#inputHosts, #inputHostsUpdate").val();
         let requests = [
             {path: 'v2/user/addNewUser', data: {}},
             {path: 'v2/user/updateUser', data: {}}
@@ -242,13 +283,54 @@ $(document).ready(function () {
         }
 
         // ajax for jenkins job
-        function jenkins (){
+        function jenkins() {
+            let jobURL = "jenkins.tradair.com:8080/job/syncNewUsers";
+            let curlStr = "http://" + jobURL + "/buildWithParameters";
             $.ajax({
-                type: "POST",
-                url: '/jenkins',
-                contentType: "application/json",
-                data: JSON.stringify(successHosts)
+                url: curlStr,
+                type: 'POST',
+                dataType: 'text',
+                data: {
+                    delay: "0sec",
+                    token: "yahalimedved",
+                    ENVIRONMENT: env,
+                    USERNAME: $("#inputUserName").val(),
+                    TOHOST: successHosts.toString()
+                },
+                beforeSend: (xhr) => {
+                    xhr.setRequestHeader("Authorization", "Basic " + btoa("remote:Panda230"));
+                }
             })
+                .done(function () {
+                    console.log("success");
+                })
+                .fail(function () {
+                    console.log("error");
+                });
         }
     });
+
+
+    //##########################################################################
+    // Populate the Hosts for each Org inside orgEnvironments[environment].data
+    // for (let obj in orgEnvironments){
+    //     postData.payload.url = orgEnvironments[obj].url;
+    //     $.ajax({
+    //         type: "POST",
+    //         url: apiURL,
+    //         contentType: "application/json",
+    //         data: JSON.stringify(postData)
+    //     }).done(function (data) {
+    //         if (JSON.parse(data).error){
+    //             console.log("There's an error with the received data for %s :(", obj);
+    //             return;
+    //         }
+    //         let hosts = JSON.parse(data).payload;
+    //         let newArr = [];
+    //         for (let i = 0; i < hosts.length; i++) {
+    //             newArr.push(renameKeys(hosts[i], newKeys));
+    //         }
+    //         orgEnvironments[obj].data = newArr;
+    //     });
+    // }
 });
