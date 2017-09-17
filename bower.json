@@ -1,0 +1,23 @@
+{
+  "name": "usersite",
+  "description": "",
+  "main": "app.js",
+  "authors": [
+    "Moshe Avni <moshea@tradair.com>"
+  ],
+  "license": "ISC",
+  "homepage": "https://github.com/Moshem123/usersSite",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "^3.2.1",
+    "font-awesome": "^4.7.0",
+    "select2": "select2-dist#^4.0.3",
+    "bootstrap": "^3.3.7"
+  }
+}
