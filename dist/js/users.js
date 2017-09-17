@@ -216,7 +216,8 @@ $(document).ready(function () {
                 url: orgEnvironments[env].url
             }
         };
-        let selectedHosts = $("#inputHosts, #inputHostsUpdate").val();
+
+        let selectedHosts = $("#inputHosts option:selected");
         let requests = [
             {path: 'v2/user/addNewUser', data: {}},
             {path: 'v2/user/updateUser', data: {}}
@@ -231,14 +232,8 @@ $(document).ready(function () {
                 return
             }
             //assign orgId (i) to formdata, convert to json and put inside requests array
-            formData.payload.orgId = selectedHosts[i];
-            let sMachine = "";
-            tradairOrgId.map(function (obj) {
-                if (obj.id === formData.payload.orgId) {
-                    sMachine = obj.text;
-                }
-            });
-            formData.header.ownerName = sMachine + '.tradair.com';
+            formData.payload.orgId = selectedHosts[i].value;
+            formData.header.ownerName = selectedHosts[i].text + '.tradair.com';
 
             // Deep copy 1
             let formDataClone1 = jQuery.extend(true, {}, formData);
