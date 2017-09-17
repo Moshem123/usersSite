@@ -1,2 +1,8 @@
 node_modules/
 .idea/
+public/test.html
+public/test.js
+public/resources/
+dist
+bower_components
+npm-debug.log*

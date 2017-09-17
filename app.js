@@ -3,9 +3,9 @@ const path = require('path');
 const request = require('request');
 const bodyParser = require('body-parser');
 const logger = require('morgan');
-const jenkinsapi = require('jenkins-api');
 const app = express();
-const port = 3000;
+const config = require('./config');
+const port = config.port;
 
 
 // Log the requests

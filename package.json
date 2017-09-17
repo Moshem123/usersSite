@@ -20,12 +20,14 @@
     "babel-core": "^6.26.0",
     "babel-preset-env": "^1.6.0",
     "browser-sync": "^2.18.13",
-    "gulp": "^3.9.1",
+    "del": "^3.0.0",
+    "gulp": "github:gulpjs/gulp#4.0",
     "gulp-babel": "^7.0.0",
     "gulp-clean-css": "^3.7.0",
+    "gulp-inject-string": "^1.1.0",
     "gulp-nodemon": "^2.2.1",
     "gulp-rename": "^1.2.2",
     "gulp-uglify": "^3.0.0",
-    "gulp-util": "^3.0.8"
+    "merge-stream": "^1.0.1"
   }
 }

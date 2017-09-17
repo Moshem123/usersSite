@@ -175,10 +175,12 @@ $(document).ready(function () {
         $("#inputHosts, #inputHostsUpdate").val(null).trigger("change")
     });
 
+
+
     // Submit the form
     $("#userForm").submit(function (event) {
         event.preventDefault();
-        var formData = {
+        let formData = {
             header: {
                 ownerName: ""
             },
